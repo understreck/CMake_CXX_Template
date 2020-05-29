@@ -1,18 +1,23 @@
 #---------------------------CMake Project Config-------------------------------
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
-project(ProjectName LANGUAGES CXX)
+project(PROJECT_NAME LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+option(CLANG_TIDY "Run clang-tidy on MandelLandscape" OFF)
+option(BUILD_TESTING OFF)
+option(BUILD_SHARED_LIBS OFF)
+
+set(APP_NAME "App")
+
+message("App name is: ${APP_NAME}")
 
 #---------------------------Compilation database generation--------------------
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(CMAKE_VERSION VERSION_LESS 3.12)
-    file(APPEND ${CMAKE_BINARY_DIR}/compile_commands.json "")
-else()
-    file(TOUCH ${CMAKE_BINARY_DIR}/compile_commands.json)
-endif()
+file(TOUCH ${CMAKE_BINARY_DIR}/compile_commands.json)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json)
 
 configure_file(${CMAKE_BINARY_DIR}/compile_commands.json 
     ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
@@ -27,8 +32,27 @@ endif()
 
 #---------------------------CCache setup---------------------------------------
 find_program(CCACHE_PROGRAM ccache)
+
 if(CCACHE_PROGRAM)
-    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-    set(CMAKE_CUDA_COMPILER_LAUNCHER "${CCACHE_PROGRAM}") # CMake 3.9+
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
 endif()
 
+#---------------------------Catch2---------------------------------------------
+if(BUILD_TESTING)
+    find_package(Catch2 QUIET)
+
+    if(NOT Catch2_FOUND)
+      add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2)
+    endif()
+endif()
+
+#---------------------------tests----------------------------------------------
+if(BUILD_TESTING)
+    option(COVERAGE "Run gcovr after testing" ON)
+    option(GCOVR_GEN_HTML "Generate html files from coverage" OFF)
+
+    add_subdirectory(tests)
+endif()
+
+#---------------------------APP_NAME-------------------------------------------
+add_subdirectory(src)

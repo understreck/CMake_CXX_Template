@@ -29,3 +29,11 @@ compile_commands.json
 
 #Local diagnostic files
 *.cap
+
+#IDE artifacts
+/.vs
+/CMakeSettings.json
+.vscode/
+
+#Coverage files
+coverage/
