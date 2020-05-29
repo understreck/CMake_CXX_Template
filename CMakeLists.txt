@@ -5,8 +5,9 @@ project(PROJECT_NAME LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-if (NOT CMAKE_BUILD_TYPE)
-    set( CMAKE_BUILD_TYPE Release CACHE STRING "Sets the configuration to build (Release, Debug, etc...)")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE 
+        STRING "Sets the configuration to build (Release, Debug, etc...)")
 endif()
 
 option(CLANG_TIDY "Run clang-tidy on MandelLandscape" OFF)
