@@ -46,3 +46,9 @@ else()
         PRIVATE -Werror
         PRIVATE -Wextra)
 endif()
+
+if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL Release)
+  target_link_options(${APP_NAME}
+        PRIVATE /SUBSYSTEM:WINDOWS
+        PRIVATE /ENTRY:mainCRTStartup)
+endif()
