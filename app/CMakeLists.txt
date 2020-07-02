@@ -1,25 +1,7 @@
-file(GLOB SRC 
-    "*.cpp")
-
-list(FILTER SRC EXCLUDE REGEX "main.cpp")
-
-add_library(${APP_NAME}::INTERFACE INTERFACE IMPORTED GLOBAL)
-
-target_sources(${APP_NAME}::INTERFACE
-    INTERFACE ${SRC})
-
-target_include_directories(${APP_NAME}::INTERFACE
-    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-
-target_link_libraries(${APP_NAME}::INTERFACE)
-
-add_executable(${APP_NAME})
-
-target_sources(${APP_NAME}
-    PRIVATE main.cpp)
+add_executable(${APP_NAME} main.cpp)
 
 target_link_libraries(${APP_NAME}
-    PRIVATE ${APP_NAME}::INTERFACE)
+    PRIVATE ${APP_NAME}::lib)
 
 set_target_properties(${APP_NAME}
     PROPERTIES
@@ -34,7 +16,7 @@ endif()
 
 if(CLANG_TIDY)
     set_target_properties(${APP_NAME} PROPERTIES
-        CXX_CLANG_TIDY "clang-tidy;-header-filter=./src")
+        CXX_CLANG_TIDY "clang-tidy;-header-filter=./include")
 endif()
 
 if(MSVC)

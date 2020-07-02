@@ -10,17 +10,17 @@ set_target_properties(tests
 
 target_link_libraries(tests
     PRIVATE Catch2::Catch2
-    PRIVATE ${APP_NAME}::INTERFACE)
+    PRIVATE ${APP_NAME}::lib)
 
 string(CONCAT GCOVR_CALL
-    "gcovr -r ${PROJECT_SOURCE_DIR}/src "
+    "gcovr -r ${PROJECT_SOURCE_DIR}/lib "
     "--object-directory ${PROJECT_BINARY_DIR}")
 
 if(GCOVR_GEN_HTML)
     file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/coverage)
 
     string(CONCAT GEN_HTML
-        "gcovr -r ${PROJECT_SOURCE_DIR}/src "
+        "gcovr -r ${PROJECT_SOURCE_DIR}/lib "
         "--object-directory ${PROJECT_BINARY_DIR} "
         "--html-details ${PROJECT_SOURCE_DIR}/coverage/coverage.html")
 endif()

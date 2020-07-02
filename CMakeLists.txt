@@ -59,6 +59,12 @@ if(BUILD_TESTING)
     endif()
 endif()
 
+#---------------------------APP_NAME::lib--------------------------------------
+add_subdirectory(lib)
+
+#---------------------------APP_NAME-------------------------------------------
+add_subdirectory(app)
+
 #---------------------------tests----------------------------------------------
 if(BUILD_TESTING)
     option(COVERAGE "Run gcovr after testing" ON)
@@ -66,6 +72,3 @@ if(BUILD_TESTING)
 
     add_subdirectory(tests)
 endif()
-
-#---------------------------APP_NAME-------------------------------------------
-add_subdirectory(src)
