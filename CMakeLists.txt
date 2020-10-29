@@ -18,13 +18,13 @@ if(NOT CMAKE_BUILD_TYPE)
         STRING "Sets the configuration to build (Release, Debug, etc...)")
 endif()
 
-option(CLANG_TIDY "Run clang-tidy on MandelLandscape" OFF)
+option(CLANG_TIDY OFF)
 option(BUILD_TESTING OFF)
 option(BUILD_SHARED_LIBS OFF)
+option(LTO "Link time optimisation" OFF)
+option(WIN32CONSOLE ON)
 
-set(APP_NAME "App")
-
-message("App name is: ${APP_NAME}")
+message("App name is: APP_NAME")
 
 #---------------------------Compilation database generation--------------------
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -59,7 +59,7 @@ if(BUILD_TESTING)
     endif()
 endif()
 
-#---------------------------APP_NAME::lib--------------------------------------
+#---------------------------LIB_NAME-------------------------------------------
 add_subdirectory(lib)
 
 #---------------------------APP_NAME-------------------------------------------
@@ -67,7 +67,7 @@ add_subdirectory(app)
 
 #---------------------------tests----------------------------------------------
 if(BUILD_TESTING)
-    option(COVERAGE "Run gcovr after testing" ON)
+    option(COVERAGE "Run gcovr after testing" OFF)
     option(GCOVR_GEN_HTML "Generate html files from coverage" OFF)
 
     add_subdirectory(tests)
