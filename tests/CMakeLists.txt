@@ -9,8 +9,15 @@ set_target_properties(tests
         CXX_STANDARD_REQUIRED TRUE)
 
 target_link_libraries(tests
-    PRIVATE Catch2::Catch2
-    PRIVATE ${APP_NAME}::lib)
+    PRIVATE Catch2::Catch2)
+
+if(BUILD_SHARED_LIBS)
+    target_link_libraries(tests
+        PRIVATE LIB_NAME::shared)
+else()
+    target_link_libraries(tests
+        PRIVATE LIB_NAME::static)
+endif()
 
 string(CONCAT GCOVR_CALL
     "gcovr -r ${PROJECT_SOURCE_DIR}/lib "
