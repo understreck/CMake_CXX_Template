@@ -1,9 +1,7 @@
-#include "hello.hpp"
-
 #include <iostream>
 
-int
-main(int, char**)
+auto
+main(int, char**) -> int
 {
-    std::cout << world();
+    return 0;
 }

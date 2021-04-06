@@ -5,17 +5,19 @@ cmake_policy(SET CMP0091 NEW)
 project(PROJECT_NAME LANGUAGES CXX)
 
 if(NOT CMAKE_MSVC_RUNTIME_LIBRARY)
-    set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded$<$<CONFIG:Debug>:Debug>)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded$<$<CONFIG:Debug>:Debug>)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 if(NOT CMAKE_BUILD_TYPE)
-    message("Setting build configuration to Release.")
-    message("To change, configure with -DCMAKE_BUILD_TYPE=Release/Debug/etc...")
+  message("Setting build configuration to Release.")
+  message("To change, configure with -DCMAKE_BUILD_TYPE=Release/Debug/etc...")
 
-    set(CMAKE_BUILD_TYPE Release CACHE 
-        STRING "Sets the configuration to build (Release, Debug, etc...)")
+  set(
+    CMAKE_BUILD_TYPE Release CACHE
+    STRING "Sets the configuration to build (Release, Debug, etc...)"
+  )
 endif()
 
 option(CLANG_TIDY OFF)
@@ -24,17 +26,17 @@ option(BUILD_SHARED_LIBS OFF)
 option(LTO "Link time optimisation" OFF)
 option(WIN32CONSOLE ON)
 
-message("App name is: APP_NAME")
-
 #---------------------------Compilation database generation--------------------
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(TOUCH ${CMAKE_BINARY_DIR}/compile_commands.json)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json)
 
-configure_file(${CMAKE_BINARY_DIR}/compile_commands.json 
-    ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
-    COPYONLY)
+configure_file(
+  ${CMAKE_BINARY_DIR}/compile_commands.json
+  ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
+  COPYONLY
+)
 
 #---------------------------git submodule setup--------------------------------
 option(UPDATE_SUBMODULES "Update git submodules before configuration" ON)
@@ -47,28 +49,28 @@ endif()
 find_program(CCACHE_PROGRAM ccache)
 
 if(CCACHE_PROGRAM)
-    set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
 endif()
 
 #---------------------------Catch2---------------------------------------------
 if(BUILD_TESTING)
-    find_package(Catch2 QUIET)
+  find_package(Catch2 QUIET)
 
-    if(NOT Catch2_FOUND)
-      add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2)
-    endif()
+  if(NOT Catch2_FOUND)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/Catch2)
+  endif()
 endif()
 
 #---------------------------LIB_NAME-------------------------------------------
-add_subdirectory(lib)
+add_subdirectory(src)
 
 #---------------------------APP_NAME-------------------------------------------
 add_subdirectory(app)
 
 #---------------------------tests----------------------------------------------
 if(BUILD_TESTING)
-    option(COVERAGE "Run gcovr after testing" OFF)
-    option(GCOVR_GEN_HTML "Generate html files from coverage" OFF)
+  option(COVERAGE "Run gcovr after testing" OFF)
+  option(GCOVR_GEN_HTML "Generate html files from coverage" OFF)
 
-    add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()
