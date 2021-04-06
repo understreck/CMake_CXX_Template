@@ -17,8 +17,8 @@ Makefile
 compile_commands.json
 .clangd/
 
-#Custom build/run files
-*.sh
+##Custom build/run files
+#*.sh
 
 #Local diagnostic files
 *.cap
