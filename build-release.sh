@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cmake --build build-release
+cmake --build build-release -- -j8
